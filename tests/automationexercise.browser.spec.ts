@@ -1,23 +1,26 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
-test('test', async ({ page }) => {
+test('a guest reaches signup from the cart', async ({ page }) => {
+  await page.addLocatorHandler(page.getByRole('button', { name: 'Consent', exact: true }), async button => {
+    await button.click();
+  });
   await page.goto('https://www.automationexercise.com/products');
-  const consentButton = page.getByRole('button', { name: 'Consent' });
-  if (await consentButton.isVisible()) {
-    await consentButton.click();
-  } else {
-    console.log('GDPR does not apply.');
-  }
-  const searchBar = page.getByPlaceholder('Search Product');
-  await expect(searchBar).toBeVisible();
-  const addBlueTopButton = page.locator('div.productinfo a[data-product-id="1"]')
-  await addBlueTopButton.click()
-  const modalHeading = page.getByRole("heading", { name: "Added!" });
-  await expect(modalHeading).toBeVisible();
-  await page.getByRole('button', { name: 'Continue Shopping' }).click();
-  await page.getByRole('link', { name: 'Cart' }).click();
-  await page.getByText('Proceed To Checkout').click();
-  await page.getByRole('link', { name: 'Register / Login' }).click();
-  const signupHeading = page.getByRole('heading', { name: 'New User Signup!' });
-  await expect(signupHeading).toBeVisible();
+
+  await test.step('Add Blue Top', async () => {
+    await expect(page.getByPlaceholder('Search Product')).toBeVisible();
+    await page.locator('div.productinfo a[data-product-id="1"]').click();
+    await expect(page.getByRole('heading', { name: 'Added!' })).toBeVisible();
+    await page.getByRole('button', { name: 'Continue Shopping' }).click();
+  });
+
+  await test.step('Verify the cart', async () => {
+    await page.getByRole('link', { name: 'Cart' }).click();
+    await expect(page.getByRole('link', { name: 'Blue Top', exact: true })).toBeVisible();
+  });
+
+  await test.step('Reach signup from checkout', async () => {
+    await page.getByText('Proceed To Checkout').click();
+    await page.getByRole('link', { name: 'Register / Login' }).click();
+    await expect(page.getByRole('heading', { name: 'New User Signup!' })).toBeVisible();
+  });
 });
