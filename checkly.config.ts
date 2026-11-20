@@ -1,7 +1,7 @@
 import { defineConfig } from 'checkly';
 
 export default defineConfig({
-  projectName: 'Store and API Monitoring',
+  projectName: 'Checkly monitoring setup',
   logicalId: 'store-and-api-monitoring',
   checks: {
     checkMatch: ['__checks__/monitoring.check.ts'],
