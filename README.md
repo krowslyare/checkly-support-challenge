@@ -7,13 +7,13 @@ This repo sets up two Playwright checks and three profile checks. Both groups us
 | Playwright journeys | The store test starts at `/products`, checks that Blue Top reaches the cart, and opens signup from checkout. The Pokémon test checks that Pikachu's first form has the `electric` type. |
 | Profile APIs | Each URL in [`users.json`](__checks__/api-checks/users.json) returns HTTP 200 and the expected `id` and `name`. |
 
-**Your two tests were close.** A few labels on the site no longer matched, and a couple of checks needed `()` or `await` to run. We've explained each change, with screenshots, in the comments on these commits: [Store fix](https://github.com/krowslyare/checkly-support-challenge/commit/20cac076be8732f628602e53b7d5d30902cf6e9a) · [Cart check](https://github.com/krowslyare/checkly-support-challenge/commit/2d7f2cb7dc44a2b2d8b812a80e678ead4c38cfed) · [Pokémon fix](https://github.com/krowslyare/checkly-support-challenge/commit/834f8f90269b5b9ddd641fe41589f43e4e3707b3) · [Pokémon URL checks](https://github.com/krowslyare/checkly-support-challenge/commit/d918547f479118133dc79e9120138eeb08f35241)
+**Your two tests were close.** A couple of locators didn't match the page, and a few checks were missing `()` or `await`. We've explained each change in the comments on these commits, with screenshots where they help: [Store fix](https://github.com/krowslyare/checkly-support-challenge/commit/20cac076be8732f628602e53b7d5d30902cf6e9a) · [Cart check](https://github.com/krowslyare/checkly-support-challenge/commit/2d7f2cb7dc44a2b2d8b812a80e678ead4c38cfed) · [Pokémon fix](https://github.com/krowslyare/checkly-support-challenge/commit/834f8f90269b5b9ddd641fe41589f43e4e3707b3) · [Pokémon URL checks](https://github.com/krowslyare/checkly-support-challenge/commit/d918547f479118133dc79e9120138eeb08f35241)
 
-**What we tested.** All five checks passed in Checkly, including the profile checks with the real token, and the full Quick start ran cleanly on macOS and Linux. We also deployed a copy with one check set to fail, and the failure email arrived.
+**What we tested.** All five checks passed in Checkly, including the profile checks with the real token, and the full Quick start ran on macOS and Linux. We also deployed a copy with one check set to fail, and the failure email arrived.
 
 ## Quick start
 
-You’ll need Git, Node.js 24, access to this repo, and a Checkly account. [Download Node.js](https://nodejs.org/en/download) · [Run Playwright locally](#run-playwright-locally)
+You'll need Git, Node.js 24 or later, and a Checkly account. [Download Node.js](https://nodejs.org/en/download) · [Run Playwright locally](#run-playwright-locally)
 
 **Using a coding agent?** Paste this into Claude Code, Codex, or any agent that can run commands on your machine:
 
@@ -28,6 +28,8 @@ git clone https://github.com/krowslyare/checkly-support-challenge.git
 cd checkly-support-challenge
 npm ci
 ```
+
+`npm ci` may report a few moderate audit warnings. They come from the Checkly CLI's own dependencies, not your checks. Don't run `npm audit fix --force`: it would downgrade the CLI to an old version.
 
 ### 2. Sign in and save your token
 
@@ -59,7 +61,7 @@ When it asks for the value, paste only the token, without `Bearer ` (the checks 
 npm run checkly:test -- --list
 ```
 
-You should see the store test, the Pokémon test, and three profile checks.
+You should see five checks: the two files in `tests/` and three Profile API checks.
 
 ### 4. Run the checks in Checkly
 
@@ -67,7 +69,7 @@ You should see the store test, the Pokémon test, and three profile checks.
 npm run checkly:test
 ```
 
-This runs all five checks once. Nothing is scheduled yet.
+This runs all five checks once. Nothing is scheduled yet. If it can't connect to Checkly, run `npm run checkly:test -- --detach` and follow the session with the `npx checkly test-sessions get SESSION_ID --watch` command it prints.
 
 ### 5. See what Checkly will create
 
