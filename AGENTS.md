@@ -3,7 +3,7 @@
 ## Find the code
 
 - `tests/` contains the Playwright specs. Use `.browser.spec.ts` for Browser checks and `.multi-step.spec.ts` for Multistep checks.
-- `__checks__/monitoring.check.ts` defines the groups, schedule, and failure email. `checkly.config.ts` loads it.
+- `__checks__/monitoring.check.ts` defines the groups, schedule, and failure email. `checkly.config.ts` loads every `.check.ts` file under `__checks__/`.
 - `__checks__/api-checks/users.json` is the profile list. `profile-checks.ts` turns each user into an API check.
 
 ## Check your work

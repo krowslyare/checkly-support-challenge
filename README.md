@@ -89,6 +89,7 @@ npm run checkly:deploy
 
 - **Playwright.** Save a file ending in `.browser.spec.ts` or `.multi-step.spec.ts` anywhere under `tests/`. Checkly adds it to **Playwright journeys**. **A file ending only in `.spec.ts` is ignored.** [Tests folder](tests/)
 - **Profile API.** Add a user with a unique `id`, a `name`, and a `profile_url`. Checkly creates one check for that user. [User list](__checks__/api-checks/users.json)
+- **Any other check.** Save a file ending in `.check.ts` anywhere under `__checks__/`, such as a hand-written API check. Checkly picks it up on the next deploy.
 
 To apply the same rules to another list, pass it to `createProfileChecks` with its group and a different ID prefix. [API check generator](__checks__/api-checks/profile-checks.ts)
 
