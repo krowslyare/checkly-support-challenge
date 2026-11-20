@@ -15,12 +15,14 @@ export function createProfileChecks(profiles: readonly Profile[], group: CheckGr
     }
     seen.add(id);
 
+    // The logical ID is idPrefix plus the user id. Changing either deletes this check and its history.
     return new ApiCheck(`${idPrefix}-${id}`, {
       name: `Profile API · ${name}`,
       group,
       request: {
         method: 'GET',
         url: profile_url,
+        // Checkly fills in {{PROFILE_API_TOKEN}} from a secret at run time. Using process.env here would copy the token into the deployed check.
         headers: [{ key: 'Authorization', value: 'Bearer {{PROFILE_API_TOKEN}}' }],
         assertions: [
           AssertionBuilder.statusCode().equals(200),

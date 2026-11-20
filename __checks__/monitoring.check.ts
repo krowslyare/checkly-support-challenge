@@ -14,6 +14,7 @@ const sharedSettings = {
   frequency: Frequency.EVERY_1H,
   locations: ['us-east-1'],
   alertChannels: [failureEmail],
+  // Email on the first failed run, with no reminders. Checkly retries each failed check once by default, from a different region, before the run counts as failed.
   alertEscalationPolicy: AlertEscalationBuilder.runBasedEscalation(1, { interval: 5, amount: 0 }),
 } satisfies Omit<CheckGroupV2Props, 'name'>;
 

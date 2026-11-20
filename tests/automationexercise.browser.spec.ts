@@ -1,9 +1,11 @@
 import { expect, test } from '@playwright/test';
 
 test('a guest reaches signup from the cart', async ({ page }) => {
+  // The consent dialog only shows in some regions and can appear late. This clicks it whenever it shows up.
   await page.addLocatorHandler(page.getByRole('button', { name: 'Consent', exact: true }), async button => {
     await button.click();
   });
+  // Start on /products: clicking Products on the homepage can open a full-page ad instead.
   await page.goto('https://www.automationexercise.com/products');
 
   await test.step('Add Blue Top', async () => {
